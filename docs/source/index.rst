@@ -13,6 +13,10 @@ Welcome to pywps_autodoc's documentation!
 
 .. autoclass:: flyingpigeon.processes.FactsheetProcess
 
+.. autoclass:: flyingpigeon.processes.ClipcontinentProcess
+
+.. autoclass:: flyingpigeon.processes.IndicespercentileProcess
+
 
 
 Indices and tables
