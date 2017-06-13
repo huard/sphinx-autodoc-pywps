@@ -1,6 +1,8 @@
 import inspect
 
-from sphinx.ext.autodoc import FunctionDocumenter, MethodDocumenter
+from sphinx.ext.autodoc import FunctionDocumenter, MethodDocumenter, ClassDocumenter
+from sphinx.util.docstrings import prepare_docstring
+import pywps
 
 def get_class_link(obj):
     if (obj is None) or (obj == inspect.Signature.empty):
@@ -59,24 +61,50 @@ def add_annotation_content(obj, result):
             # Yeah, inefficient, but we need to keep the same list instance.
             result.insert(insert_index, line)
 
-class MyFunctionDocumenter(FunctionDocumenter):
+def add_handler_content(obj, result):
+    self.get_attr(self.object, '_handler', None)
+
+class ProcessDocumenter(ClassDocumenter):
+    priority = ClassDocumenter.priority+1
+    
+    @classmethod
+    def can_document_member(cls, member, membername, isattr, parent):
+        return issubclass(cls, pywps.Process)
+        
     def get_doc(self, *args, **kwargs):
-        result = super().get_doc(*args, **kwargs)
+        """Numpy style docstring (supports multiple outputs)."""
+        out = []
+        obj = self.object()
         
-        if result:
-            add_annotation_content(self.object, result[-1])
+        out.append("{} *{}* : {}".format(obj.identifier, obj.version, obj.title))
+        out.append('')
+        out.append(obj.abstract)
+        out.append('')
+        out.append('Parameters')
+        out.append('----------')
         
+        for i in obj.inputs:
+            if getattr(i, 'data_type', None):
+                out.append("{} : {}".format(i.identifier, i.data_type))
+            else:
+                out.append("{}".format(i.identifier))
+            out.append("   {}".format( getattr(i, 'abstract', None) or getattr(i, 'title', '')))
+        
+        out.append('')    
+        out.append("Returns")
+        out.append("-------")
+        for i in obj.outputs:
+            if getattr(i, 'data_type', None):
+                out.append("{} : {}".format(i.identifier, i.data_type))
+            else:
+                out.append("{}".format(i.identifier))
+            out.append("   {}".format( getattr(i, 'abstract', None) or getattr(i, 'title', '')))
+        
+        
+        result = [prepare_docstring('\n'.join(out))]
+        print out, result
         return result
 
-class MyMethodDocumenter(MethodDocumenter):
-    def get_doc(self, *args, **kwargs):
-        result = super().get_doc(*args, **kwargs)
-        
-        if result:
-            add_annotation_content(self.object, result[-1])
-        
-        return result
 
 def setup(app):
-    app.add_autodocumenter(MyFunctionDocumenter)
-    app.add_autodocumenter(MyMethodDocumenter)
+    app.add_autodocumenter(ProcessDocumenter)
