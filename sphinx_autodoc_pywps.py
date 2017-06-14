@@ -99,15 +99,18 @@ class ProcessDocumenter(ClassDocumenter):
                 isref = True
                 
         ref.append('')
-        print ref
-        if isref: doc += ref
+        
+        if isref: 
+            doc += ref
         
         return u'\n'.join(doc)
         
                                       
 
     def get_doc(self, encoding=None, ignore=1):
-        # Scrape the information from the Process instance.
+        # Scrape the information from the Process instance. 
+        # Overrides ClassDocumenter.get_doc
+        
         docstring = self.make_numpy_doc()
         
         doc = [prepare_docstring(force_decode(docstring, encoding), ignore)]
