@@ -43,7 +43,13 @@ abstract, version, inputs & outputs as well as metadata. Additional
 documentation sections can be added in the class docstring itself, and 
 will be appended to the class documentation. 
 
+
+Testing
+-------
+
+Install `flyingpigeon`_, then go into the ``docs`` directory and run ``make html``. This will build a simple documentation for a few flyingpigeon processes. 
+
 .. _napoleon: https://sphinxcontrib-napoleon.readthedocs.io
 .. _numpy docstring: https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt 
 .. _pywps: http://pywps.org/
-
+.. _flyingpigeon: https://github.com/bird-house/flyingpigeon
