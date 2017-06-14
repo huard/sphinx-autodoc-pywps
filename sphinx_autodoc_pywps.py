@@ -4,6 +4,7 @@ from sphinx.util.docstrings import prepare_docstring
 from sphinx.util import force_decode
 from six import text_type
 import pywps
+from pywps.app.Common import Metadata
 
 class ProcessDocumenter(ClassDocumenter):
     """Sphinx autodoc ClassDocumenter subclass that understands the 
@@ -78,6 +79,28 @@ class ProcessDocumenter(ClassDocumenter):
         for i in obj.outputs:
             doc.append("{}{}".format(i.identifier, self.fmt_type(i)))
             doc.append("   {}".format( i.abstract or i.title))
+        doc.append('')    
+        
+        # Metadata
+        isref = False
+        ref = []
+        ref.append("References")
+        ref.append("----------")
+        ref.append('')
+        for m in obj.metadata:
+            if isinstance(m, Metadata):
+                title, href = m.title, m.href
+            elif type(m) == dict:
+                title, href = m['title'], m['href']
+            else:
+                title, href = None, None
+            if title and href:    
+                ref.append(u" - `{} <{}>`_".format(title, href))
+                isref = True
+                
+        ref.append('')
+        print ref
+        if isref: doc += ref
         
         return u'\n'.join(doc)
         
