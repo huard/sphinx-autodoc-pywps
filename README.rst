@@ -16,7 +16,7 @@ You can install ``sphinx-autodoc-pywps`` with::
     $ python setup.py install
 
 Then, you need to enable the extension in your ``conf.py`` file, along
-with the [napoleon]_ extension and set the ``napoleon_numpy_docstring``
+with the `napoleon`_ extension and set the ``napoleon_numpy_docstring``
 flag to ``True``::
 
     extensions = [
@@ -43,6 +43,7 @@ abstract, version, inputs & outputs as well as metadata. Additional
 documentation sections can be added in the class docstring itself, and 
 will be appended to the class documentation. 
 
-.. [napoleon] https://sphinxcontrib-napoleon.readthedocs.io
-
+.. _napoleon: https://sphinxcontrib-napoleon.readthedocs.io
 .. _numpy docstring: https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt 
+.. _pywps: http://pywps.org/
+
