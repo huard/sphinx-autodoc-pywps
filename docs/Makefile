@@ -6,7 +6,7 @@ SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
 SPHINXPROJ    = pywps_autodoc
 SOURCEDIR     = source
-BUILDDIR      = build
+BUILDDIR      = _build
 
 GH_PAGES_SOURCES = source Makefile
 
@@ -29,5 +29,16 @@ gh-pages:
 	make html
 	mv -fv $(BUILDDIR)/html/* ./
 	rm -rf $(GH_PAGES_SOURCES) $(BUILDDIR)
+	git add -A
+	git ci -m "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" && git push origin gh-pages ; git checkout master
+
+gh-pages2:
+	git checkout gh-pages
+	rm -rf _build _sources _static
+	git checkout master $(GH_PAGES_SOURCES)
+	git reset HEAD
+	make html
+	mv -fv _build/html/* ./
+	rm -rf $(GH_PAGES_SOURCES) _build
 	git add -A
 	git ci -m "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" && git push origin gh-pages ; git checkout master
