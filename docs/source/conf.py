@@ -34,7 +34,8 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
-    'sphinx_autodoc_pywps',]
+    'sphinx_autodoc_pywps',
+    'sphinx.ext.githubpages']
 
 napoleon_numpy_docstring = True
 
