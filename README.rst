@@ -21,7 +21,7 @@ flag to ``True``::
 
     extensions = [
         'sphinx.ext.autodoc',
-        'sphinx.ext.napoleon'
+        'sphinx.ext.napoleon',
         'sphinx_autodoc_pywps',
     ]
     
