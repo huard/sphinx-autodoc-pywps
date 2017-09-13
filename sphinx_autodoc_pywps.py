@@ -27,25 +27,27 @@ class ProcessDocumenter(ClassDocumenter):
         nmax = 10
         
         doc = ''
-        
-        if getattr(obj, 'allowed_values', None):
-            av = ', '.join(["'{}'".format(i.value) for i in obj.allowed_values[:nmax]])
-            if len(obj.allowed_values) > nmax:
-                av += ', ...'
-        
-            doc += " : {" + av + "}"
-            
-        elif getattr(obj, 'data_type', None):
-            doc += ' : ' + obj.data_type
-            
-        elif getattr(obj, 'data_format', None):
-            doc += ' : ' + obj.data_format.mime_type
-        
-        if getattr(obj, 'min_occurs', None) is not None:
-            if obj.min_occurs == 0:
-                doc += ', optional'
-                doc += ':{0}'.format(obj.default)
-        
+        try:
+            if getattr(obj, 'allowed_values', None):
+                av = ', '.join(["'{}'".format(i.value) for i in obj.allowed_values[:nmax]])
+                if len(obj.allowed_values) > nmax:
+                    av += ', ...'
+
+                doc += " : {" + av + "}"
+
+            elif getattr(obj, 'data_type', None):
+                doc += ' : ' + obj.data_type
+
+            elif getattr(obj, 'data_format', None):
+                doc += ' : ' + obj.data_format.mime_type
+
+            if getattr(obj, 'min_occurs', None) is not None:
+                if obj.min_occurs == 0:
+                    doc += ', optional'
+                    doc += ':{0}'.format(obj.default)
+
+        except Exception as e:
+            raise type(e)(e.message + ' in {0} docstring'.format(self.object().identifier))
         return doc
         
         
