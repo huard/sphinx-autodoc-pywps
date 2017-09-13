@@ -44,7 +44,8 @@ class ProcessDocumenter(ClassDocumenter):
             if getattr(obj, 'min_occurs', None) is not None:
                 if obj.min_occurs == 0:
                     doc += ', optional'
-                    doc += ':{0}'.format(obj.default)
+                    if getattr(obj, 'default', None) :
+                        doc += ':{0}'.format(obj.default)
 
         except Exception as e:
             raise type(e)(e.message + ' in {0} docstring'.format(self.object().identifier))
