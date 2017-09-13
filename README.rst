@@ -11,7 +11,7 @@ First, you need pywps-based processes and a Sphinx documentation (with ``autodoc
 
 You can install ``sphinx-autodoc-pywps`` with::
 
-    $ git clone git@github.com:huard/sphinx-autodoc-pywps.git
+    $ git clone https://github.com/huard/sphinx-autodoc-pywps.git
     $ cd sphinx-autodoc-pywps
     $ python setup.py install
 
@@ -21,7 +21,7 @@ flag to ``True``::
 
     extensions = [
         'sphinx.ext.autodoc',
-        'sphinx.ext.napoleon'
+        'sphinx.ext.napoleon',
         'sphinx_autodoc_pywps',
     ]
     
