@@ -14,7 +14,7 @@ setup(
     #url = "https://github.com/hsoft/sphinx-autodoc-annotation",
     py_modules = ['sphinx_autodoc_pywps'],
     install_requires = [
-        'sphinx>=1.1',
+        'sphinx>=1.3',
     ],
     author="David Huard",
     author_email="david.huard@gmail.com",
