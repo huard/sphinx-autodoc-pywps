@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from sphinx.ext.autodoc import ClassDocumenter
+from sphinx.ext.napoleon.docstring import NumpyDocstring
 from sphinx.util.docstrings import prepare_docstring
 from sphinx.util import force_decode
 from six import text_type
@@ -21,7 +22,7 @@ class ProcessDocumenter(ClassDocumenter):
         return issubclass(cls, pywps.Process)
         
     def fmt_type(self, obj):
-        """Input and docput type formatting (type, default and allowed 
+        """Input and output type formatting (type, default and allowed
         values).
         """
         nmax = 10
@@ -50,20 +51,19 @@ class ProcessDocumenter(ClassDocumenter):
         except Exception as e:
             raise type(e)(e.message + ' in {0} docstring'.format(self.object().identifier))
         return doc
-        
-        
-    def make_numpy_doc(self):
+
+
+    def make_doc(self):
         """Numpy style docstring where meta data is scraped from the 
         class instance.
         
-        The numpy style is used because it supports multiple docputs.
-        
+        The numpy style is used because it supports multiple outputs.
         """
         obj = self.object()
         
         # Description
         doc = []
-        doc.append(u"{} *{}* – {}".format(obj.identifier, obj.version or '', obj.title))
+        doc.append(u"``{}`` {} (v{})".format(obj.identifier,  obj.title, obj.version or '',))
         doc.append('')
         doc.append(obj.abstract)
         doc.append('')
@@ -105,25 +105,33 @@ class ProcessDocumenter(ClassDocumenter):
         
         if isref: 
             doc += ref
-        
+
+        return doc
         return u'\n'.join(doc)
         
                                       
 
     def get_doc(self, encoding=None, ignore=1):
-        # Scrape the information from the Process instance. 
-        # Overrides ClassDocumenter.get_doc
-        
-        docstring = self.make_numpy_doc()
-        
-        doc = [prepare_docstring(force_decode(docstring, encoding), ignore)]
-        
-        # Get extra sections from the class docstring
-        # I don't understand what happens here. The `get_doc` function seems to be called twice, once without this call to super, and once with it. 
-        extra = super(ProcessDocumenter, self).get_doc(encoding, ignore) or [prepare_docstring(force_decode(u'', encoding), ignore)]
-        
-        out = doc + extra
-        return out[-2:]
+        """Overrides ClassDocumenter.get_doc to create the doc scraped from the Process object, then adds additional
+        content from the class docstring.
+        """
+
+        process_docstring = self.make_doc()
+        class_docstring = self.get_attr(self.object, '__doc__', [])
+
+        if class_docstring:
+            process_docstring.append(class_docstring)
+
+        docstrings = NumpyDocstring(process_docstring, what='class').lines()
+
+        doc = []
+        for docstring in docstrings:
+            if isinstance(docstring, text_type):
+                doc.append(prepare_docstring(docstring, ignore))
+            elif isinstance(docstring, str):  # this will not trigger on Py3
+                doc.append(prepare_docstring(force_decode(docstring, encoding),
+                                             ignore))
+        return doc
 
 
 def setup(app):
