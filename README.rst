@@ -2,7 +2,7 @@ sphinx-autodoc-pywps
 ====================
 
 *Automatically generate documentation for pywps Process subclasses in 
-sphinx*
+Sphinx*
 
 Installation
 ------------
@@ -16,8 +16,7 @@ You can install ``sphinx-autodoc-pywps`` with::
     $ python setup.py install
 
 Then, you need to enable the extension in your ``conf.py`` file, along
-with the `napoleon`_ extension and set the ``napoleon_numpy_docstring``
-flag to ``True``::
+with the `napoleon`_ extension::
 
     extensions = [
         'sphinx.ext.autodoc',
@@ -25,7 +24,7 @@ flag to ``True``::
         'sphinx_autodoc_pywps',
     ]
     
-    napoleon_numpy_docstring = True
+
 
 The `numpy docstring`_ convention is used because it is the only one at the
 moment supporting multiple outputs. 
@@ -33,10 +32,10 @@ moment supporting multiple outputs.
 Usage
 -----
 
-Simply use the ``autoclass`` directive with `pywps`_ Process subclasses
+Simply use the ``autoprocess`` directive with `pywps`_ Process subclasses
 in your documentation::
 
-    .. autoclass:: flyingpigeon.processes.IndicespercentileProcess
+    .. autoprocess:: flyingpigeon.processes.IndicespercentileProcess
 
 This will parse the ``Process`` instance for its identifier, title, 
 abstract, version, inputs & outputs as well as metadata. Additional 
