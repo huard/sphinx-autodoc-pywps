@@ -4,6 +4,8 @@ sphinx-autodoc-pywps
 *Automatically generate documentation for pywps Process subclasses in 
 Sphinx*
 
+This extension will be embedded into pywps itself as of version 4.2 and this repo won't be maintained afterward. 
+
 Installation
 ------------
 
