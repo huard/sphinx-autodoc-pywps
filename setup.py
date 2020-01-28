@@ -15,6 +15,7 @@ setup(
     py_modules = ['sphinx_autodoc_pywps'],
     install_requires = [
         'sphinx>=1.3',
+        'pywps',
     ],
     author="David Huard",
     author_email="david.huard@gmail.com",
